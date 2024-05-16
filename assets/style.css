@@ -89,4 +89,25 @@ body {
 
 .humidity, .wind {
   font-size: 18px;
+}
+
+.dayofweek {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.day {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px;
+  width: 80%;
+}
+
+.temperature {
+  display: flex;
+  flex-direction: row;
 }/*# sourceMappingURL=style.css.map */
