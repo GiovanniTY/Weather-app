@@ -17,6 +17,7 @@ const searchBox = document.getElementById("input");
 const searchBtn = document.getElementById("btn");
 const weatherIcon = document.querySelector(".weather-icon");
 const weatherDiv = document.querySelector('.card');
+let imageUrl; 
 
 /**
  * Sets the background image based on the city using the Unsplash API.
@@ -31,11 +32,11 @@ async function setBackground(city) {
         
         if (data.results.length > 0) {
             imageUrl = data.results[0].urls.regular; // Assign the value
-            weatherDiv.style.backgroundImage = `url(${imageUrl})`;
-            weatherDiv.style.backgroundSize = 'cover'; // Resize the image to cover the available space
-            weatherDiv.style.backgroundPosition = 'center'; // Center the image
-            weatherDiv.style.backgroundRepeat = 'no-repeat'; // Prevent image repetition
-            weatherDiv.style.zIndex = '-9'; // Set z-index value to -9
+            document.body.style.backgroundImage = `url(${imageUrl})`;
+            document.body.style.backgroundSize = 'cover'; // Resize the image to cover the available space
+            document.body.style.backgroundPosition = 'center'; // Center the image
+            document.body.style.backgroundRepeat = 'no-repeat'; // Prevent image repetition
+            document.body.style.zIndex = '1'; // Set z-index value to -9
 
         } else {
             console.error("No image found for the specified city.");

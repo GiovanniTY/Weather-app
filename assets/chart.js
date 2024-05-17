@@ -36,7 +36,7 @@ export function createWeatherChart() {
 
     // Define the chart configuration
     const config = {
-        type: 'line', // Type of chart
+        type: 'bar', // Type of chart
         data: data, // Data for the chart
         options: {
             responsive: true, // Makes the chart responsive to window resizing

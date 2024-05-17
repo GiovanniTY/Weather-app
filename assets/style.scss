@@ -12,12 +12,14 @@ body{
 .card{
     width: 90%;
     max-width: 470px;
-    background: linear-gradient(135deg, #00feba, #5b548a);
+    background: rgba(2, 0, 36, 0.5); /* Aggiungi opacità al colore di base */
+background: linear-gradient(90deg, rgba(2, 0, 36, 0.5) 0%, rgba(0, 12, 198, 0.5) 53%, rgba(0, 212, 255, 0.5) 100%);
     color: #fff;
     margin: 100px auto 0;
     border-radius: 20px;
     padding:40px 35px;
     text-align: center;
+    filter:blur (70%);
 }
 
 .search{
@@ -117,7 +119,6 @@ h2{
     .card {
     width: 90%;
     max-width: 90%;
-    background: linear-gradient(135deg, #00feba, #5b548a);
     color: #fff;
     margin: 50px auto; 
     border-radius: 20px;
