@@ -1,0 +1,89 @@
+import { updateDayTitles} from './date.js';
+import { processWeatherData } from './weatherDataProcessor.js';
+
+const apiKey = "60dc88381896f9e6e688047458dc391c";
+const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?units=metric&q=";
+const searchBox = document.getElementById("input");
+const searchBtn = document.getElementById("btn");
+const weatherIcon = document.querySelector(".weather-icon");
+const tempMinandMaxElements = document.querySelectorAll('.temp-min');
+
+
+// Selezione degli elementi HTML per i giorni della settimana
+const dayElements = document.querySelectorAll('.day');
+
+async function checkWeather(city){
+    const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+    const data = await response.json();
+    console.log(data);
+
+    document.querySelector(".city").innerHTML = data.city.name;
+    document.querySelector(".temp").innerHTML = Math.round(data.list[0].main.temp) + "°C";
+    document.querySelector(".humidity").innerHTML = data.list[0].main.humidity + "%";
+    document.querySelector(".wind").innerHTML = data.list[0].wind.speed + "km/h";
+
+    if(data.list[0].weather[0].main ===  "Clouds"){
+        weatherIcon.src = "assets/image/clouds.png";
+    }
+    else if(data.list[0].weather[0].main === "Clear") {
+        weatherIcon.src = "assets/image/clear.png";
+    }
+    else if(data.list[0].weather[0].main === "Rain") {
+        weatherIcon.src = "assets/image/rain.png";
+    }
+    else if(data.list[0].weather[0].main === "Drizzle") {
+        weatherIcon.src = "assets/image/drizzle.png";
+    }
+    else if(data.list[0].weather[0].main === "Mist") {
+        weatherIcon.src = "assets/image/mist.png";
+    }
+    const daysWeatherData = processWeatherData(data);
+
+    dayElements.forEach((dayElement, index) => {
+        const { minTemperature, maxTemperature } = daysWeatherData[index];
+        const temperatureElement = document.createElement('p');
+        temperatureElement.textContent = `${minTemperature}°C (min) - ${maxTemperature}°C (max)`;
+        dayElement.appendChild(temperatureElement);
+    });
+}
+updateDayTitles()
+
+searchBtn.addEventListener("click", () => {
+    checkWeather(searchBox.value);
+});
+
+
+//date.js
+export const today = new Date();
+
+const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const dayOfWeek = daysOfWeek[today.getDay()];
+console.log("Today is " + dayOfWeek);
+
+export function updateDayTitles() {
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const today = new Date().getDay();
+    const dayElements = document.querySelectorAll(".day");
+   
+
+    dayElements.forEach((dayElement, index) => {
+        const dayIndex = (today + index) % 7;
+        dayElement.textContent = daysOfWeek[dayIndex];
+    });
+}
+    
+
+// weatherDataProcessor.js
+
+export function processWeatherData(data) {
+    const forecasts = data.list;
+    const daysData = [];
+    for (let i = 0; i < forecasts.length; i += 8) {
+        const dayForecasts = forecasts.slice(i, i + 8);
+        daysData.push(dayForecasts);
+    }
+    return daysData.map(dayData => ({
+        minTemperature: Math.round(Math.min(...dayData.map(forecast => forecast.main.temp_min))),
+        maxTemperature: Math.round(Math.max(...dayData.map(forecast => forecast.main.temp_max)))
+    }));
+}
